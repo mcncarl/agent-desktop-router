@@ -30,15 +30,19 @@ If `accessibility.state` is `"denied"`, ask the user to grant Accessibility acce
 3. **Explicit scope**: Always pass `--app "<App>"`, `--window-id w-<num>`, or a `@snapshot:eN` ref on `snapshot`, `find`, `screenshot`, `press`, and `wait`. Unscoped commands that target the frontmost app are blocked.
 4. **Headless first**: Omit `--headed` by default so the user's cursor and focus are untouched. Use `--headed` or `mouse-click` only after a headless click fails to change the UI — notify the user first and verify the target window is frontmost.
 
-### Dedicated Chrome Window Workflow
+### Dedicated Chrome Window Workflow (`Default` Profile)
 ```bash
-# 1. List Chrome windows and pick/open a dedicated window ID (w-<number>)
+# 1. Open a clean 1-tab window in Chrome's primary profile (no restart, avoids scanning huge personal windows or blank MCP profiles)
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --profile-directory="Default" --new-window "https://example.com"
+
+# 2. List Chrome windows and grab the new dedicated window ID (w-<number>)
 agent-desktop list-windows --app "Google Chrome"
 
-# 2. Read interactive elements from that locked window in the background
+# 3. Read interactive elements from that locked window in the background
 agent-desktop snapshot --window-id w-1234 -i --compact
 
-# 3. Act on a qualified ref and re-snapshot to verify
+# 4. Act on a qualified ref and re-snapshot to verify
 agent-desktop click @s8f3k2p9:e5
 agent-desktop snapshot --window-id w-1234 -i --compact
 ```

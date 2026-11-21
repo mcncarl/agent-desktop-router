@@ -68,7 +68,7 @@ flowchart TD
 | :--- | :--- | :--- |
 | Project files, notes, cloud docs, timelines with scriptable APIs | **Tier 1: Native CLI / API / File** | Millisecond speed, zero UI flakiness |
 | Web pages in **Codex / Claude Code** (cookie-synced), or public pages in **Antigravity** | **Tier 2A: Built-in Agent Browser** | Fastest web path when the host browser already holds (or doesn't need) cookies |
-| Logged-in web pages in **Antigravity** (isolated webview) or pure CLI sessions | **Tier 2B: `agent-desktop` + dedicated `--window-id`** | Reuses your daily Chrome login state in background; tab switches in your personal window never break `@snapshot:eN` refs |
+| Logged-in web pages in **Antigravity** (isolated webview) or pure CLI sessions | **Tier 2B: Chrome `Default` `--new-window` + `agent-desktop --window-id`** | Opens a clean 1-tab window in your primary Chrome profile (`--profile-directory="Default"`) and locks `--window-id` so personal multi-tab windows never time out or lose `@snapshot:eN` refs |
 | Electron & native macOS apps (Obsidian, Finder, menu bars) | **Tier 2B: `agent-desktop` (headless)** | Reads Accessibility tree & clicks in background without moving your cursor |
 | Custom-drawn canvases (CapCut/Jianying, AE modals, FocuSee, iPhone Mirroring) | **Tier 3: Computer Use (`LCU` / CUA)** | Screenshot + vision coordinates handle any pixel-rendered surface |
 | Private IMs, password vaults, macOS Notification Center | **Blocked at Layer 0** | Hard-blocked before tool execution across every agent |

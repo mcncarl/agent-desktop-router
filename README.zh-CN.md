@@ -65,7 +65,7 @@ flowchart TD
 | :--- | :--- | :--- |
 | 本地笔记、工程草稿、有现成 CLI/API 的云文档与时间线 | **第一层：原生接口** | 毫秒级完成，100% 确定性，完全不动 UI |
 | **Codex / Claude Code** 任意网页（已与 Chrome 同步 Cookie），或 **Antigravity** 免登录网页 | **第二层 A：Agent 内置浏览器** | 宿主本身已有登录态（或无需登录），内置直连最省事 |
-| **Antigravity** 需复用日常登录态的网页（内置沙盒不同步 Cookie），或纯 CLI 终端模式 | **第二层 B：`agent-desktop` + 专用 `--window-id`** | 直接复用日常 Chrome 登录态后台读写；单开窗口锁 ID，你在主窗口切标签页也不串台 |
+| **Antigravity** 需复用日常登录态的网页（内置沙盒不同步 Cookie），或纯 CLI 终端模式 | **第二层 B：Chrome `Default` 单开窗口 + `agent-desktop` 锁 `--window-id`** | 通过 `--profile-directory="Default" --new-window` 拉起默认主账号干净单窗口并锁 ID，既避开多标签主窗口超时，你在原窗口切标签页也不串台 |
 | Obsidian、企业微信、Finder、各软件顶部菜单栏 | **第二层 B：`agent-desktop`（后台模式）** | 直接读无障碍结构树并后台点击，**不抢鼠标、不抢焦点** |
 | 剪映自绘按钮、AE 弹窗、FocuSee、iPhone 镜像、UI 走查 | **第三层：Computer Use（`LCU` / CUA）** | 屏幕能看见就能点，通过 `LCU` 让所有 Agent 共享同一套视觉引擎 |
 | 微信、iMessage、WhatsApp、Telegram、1Password、通知中心 | **第 0 层直接熔断拦截** | 工具执行前硬拒绝，不依赖大模型自觉 |

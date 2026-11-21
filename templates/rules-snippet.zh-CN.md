@@ -6,7 +6,7 @@
 1. **第一层：原生接口（优先，不动界面）**
    - 脚本、CLI、API 或直接读写本地文件（如 ExtendScript、工程草稿文件、本地 Markdown、官方 CLI）。
 2. **第二层：结构化后台控制（内置浏览器 + `agent-desktop`）**
-   - **浏览器网页（按宿主是否已同步 Cookie 分流）**：若当前宿主内置浏览器已与日常 Chrome 同步登录态（如 **Codex**、**Claude Code**），或访问免登录公开页面（含 **Antigravity** 内置 `browser`），一律优先走**内置浏览器**；若宿主内置浏览器为独立沙盒无登录态（如 **Antigravity** 操作已登录站点，或纯 CLI 终端无内置浏览器），则直接用 `agent-desktop` 在真实 Chrome 单开专用窗口并用 `--window-id` 锁定后台操作，避免用户切标签页冲掉元素引用。
+   - **浏览器网页（按宿主是否已同步 Cookie 分流）**：若当前宿主内置浏览器已与日常 Chrome 同步登录态（如 **Codex**、**Claude Code**），或访问免登录公开页面（含 **Antigravity** 内置 `browser`），一律优先走**内置浏览器**；若宿主内置浏览器为独立沙盒无登录态（如 **Antigravity** 操作已登录站点，或纯 CLI 终端无内置浏览器），则先用 `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --profile-directory="Default" --new-window "<网址>"` 拉起默认主配置的单标签专用窗口，再用 `agent-desktop` 锁定其 `--window-id` 后台操作（既避开多标签主窗口扫描超时，又避免切标签页冲掉元素引用）。
    - **结构公开的桌面软件（Obsidian、企业微信等 Electron/原生应用及顶部菜单栏）**：统一使用 `agent-desktop` 默认后台模式（不动鼠标、不抢焦点）。
    - 在命令行直接按字面量传 `--app`、`--window-id`、`@snapshot:eN` 引用或 `--xy` 坐标，不包进脚本或用变量；仅当后台点击无效时才用 `--headed` / `mouse-click`，用前先告知用户并确认目标窗口在最上层。
 3. **第三层：截图视觉兜底（Computer Use / `LCU`）**
