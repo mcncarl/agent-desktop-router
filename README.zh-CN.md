@@ -53,8 +53,8 @@ flowchart TD
     Task["收到桌面或浏览器任务"] --> Gate["第 0 层：技术级安全闸门<br/>PreToolUse Hook + CLI 守卫 + Swift 窗口/坐标探针<br/>硬拦截私人聊天软件、密码管理器与系统通知中心"]
     Gate --> T1["第一层：原生接口（最快 · 零误触 · 不动界面）<br/>AE ExtendScript · 剪映草稿文件 · Obsidian Markdown · 官方 CLI/API"]
     T1 -- "必须操作界面或网页" --> WebCheck{"网页还是桌面软件？"}
-    WebCheck -- "免登录公开网页" --> T2A["第二层 A：Agent 内置浏览器<br/>独立沙盒，不打扰日常浏览器"]
-    WebCheck -- "需复用登录态的 Chrome / 结构公开软件" --> T2B["第二层 B：agent-desktop（默认后台模式）<br/>真实 Chrome 单开窗口并用 --window-id 锁定<br/>Obsidian / 企业微信 / 各软件顶部菜单栏<br/>不动鼠标 · 不抢焦点"]
+    WebCheck -- "Codex / Claude（已同步 Cookie）<br/>或 Antigravity 免登录页" --> T2A["第二层 A：Agent 内置浏览器<br/>直接带态或沙盒直连，不打扰日常窗口"]
+    WebCheck -- "Antigravity 需登录态网页<br/>或结构公开桌面软件" --> T2B["第二层 B：agent-desktop（默认后台模式）<br/>真实 Chrome 单开窗口并用 --window-id 锁定<br/>Obsidian / 企业微信 / 各软件顶部菜单栏<br/>不动鼠标 · 不抢焦点"]
     T2A -- "自绘画布 / 视觉验收" --> T3["第三层：Computer Use 视觉兜底（LCU / 原生 CUA）<br/>剪映自绘导出面板 · AE 弹窗 · FocuSee · iPhone 镜像<br/>多 Agent 共用本机 ChatGPT.app 视觉引擎"]
     T2B -- "无障碍树为空或后台点击无效" --> T3
 ```
@@ -64,8 +64,8 @@ flowchart TD
 | 任务场景 | 命中层级 | 核心原因 |
 | :--- | :--- | :--- |
 | 本地笔记、工程草稿、有现成 CLI/API 的云文档与时间线 | **第一层：原生接口** | 毫秒级完成，100% 确定性，完全不动 UI |
-| 查公开资料、免登录网页测试 | **第二层 A：Agent 内置浏览器** | 独立隔离，不污染个人浏览器窗口 |
-| 需复用登录态的真实 Chrome（发帖后台、内部系统） | **第二层 B：`agent-desktop` + 专用 `--window-id`** | 后台静默读写；单开窗口锁定 ID，你在原窗口随便切标签页也不串台 |
+| **Codex / Claude Code** 任意网页（已与 Chrome 同步 Cookie），或 **Antigravity** 免登录网页 | **第二层 A：Agent 内置浏览器** | 宿主本身已有登录态（或无需登录），内置直连最省事 |
+| **Antigravity** 需复用日常登录态的网页（内置沙盒不同步 Cookie），或纯 CLI 终端模式 | **第二层 B：`agent-desktop` + 专用 `--window-id`** | 直接复用日常 Chrome 登录态后台读写；单开窗口锁 ID，你在主窗口切标签页也不串台 |
 | Obsidian、企业微信、Finder、各软件顶部菜单栏 | **第二层 B：`agent-desktop`（后台模式）** | 直接读无障碍结构树并后台点击，**不抢鼠标、不抢焦点** |
 | 剪映自绘按钮、AE 弹窗、FocuSee、iPhone 镜像、UI 走查 | **第三层：Computer Use（`LCU` / CUA）** | 屏幕能看见就能点，通过 `LCU` 让所有 Agent 共享同一套视觉引擎 |
 | 微信、iMessage、WhatsApp、Telegram、1Password、通知中心 | **第 0 层直接熔断拦截** | 工具执行前硬拒绝，不依赖大模型自觉 |

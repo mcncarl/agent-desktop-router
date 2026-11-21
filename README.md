@@ -56,8 +56,8 @@ flowchart TD
     Task["Incoming Desktop or Browser Task"] --> Gate["Layer 0: Hard Safety Gate<br/>PreToolUse Hook + CLI Wrapper + Swift CoreGraphics Probe<br/>Blocks private IMs, password managers & Notification Center"]
     Gate --> T1["Tier 1: Native CLI / API / File Edit<br/>ExtendScript · Draft JSON · Local Markdown · Official CLIs<br/>Fastest · Deterministic · Zero UI Touch"]
     T1 -- "Needs live UI or browser" --> WebCheck{"Browser or Desktop App?"}
-    WebCheck -- "Public / Unauthenticated Web" --> T2A["Tier 2A: Agent Built-in Browser<br/>Isolated sandbox, zero focus theft"]
-    WebCheck -- "Logged-in Chrome or Accessible App" --> T2B["Tier 2B: agent-desktop (Headless Default)<br/>Chrome locked via dedicated --window-id<br/>Obsidian / Electron / Native menu bars<br/>Does NOT move mouse or steal focus"]
+    WebCheck -- "Codex / Claude (cookie-synced)<br/>or Antigravity (public web)" --> T2A["Tier 2A: Agent Built-in Browser<br/>Zero focus theft, native speed"]
+    WebCheck -- "Antigravity (logged-in web)<br/>or Accessible Desktop App" --> T2B["Tier 2B: agent-desktop (Headless Default)<br/>Chrome locked via dedicated --window-id<br/>Obsidian / Electron / Native menu bars<br/>Does NOT move mouse or steal focus"]
     T2A -- "Custom canvas / Visual QA" --> T3["Tier 3: Computer Use Fallback (LCU / Native CUA)<br/>Custom-drawn video timelines · AE dialogs · iPhone Mirroring<br/>Shared local ChatGPT.app CUA engine across all agents"]
     T2B -- "Empty AX tree or headless click ignored" --> T3
 ```
@@ -67,8 +67,8 @@ flowchart TD
 | Scenario | Selected Tier | Why |
 | :--- | :--- | :--- |
 | Project files, notes, cloud docs, timelines with scriptable APIs | **Tier 1: Native CLI / API / File** | Millisecond speed, zero UI flakiness |
-| Public docs, search, unauthenticated web apps | **Tier 2A: Built-in Agent Browser** | Clean sandbox, zero impact on personal browser |
-| Logged-in Chrome tabs (X, dashboards, internal tools) | **Tier 2B: `agent-desktop` + dedicated `--window-id`** | Reuses real login state in background; tab switches in your own window never break `@snapshot:eN` refs |
+| Web pages in **Codex / Claude Code** (cookie-synced), or public pages in **Antigravity** | **Tier 2A: Built-in Agent Browser** | Fastest web path when the host browser already holds (or doesn't need) cookies |
+| Logged-in web pages in **Antigravity** (isolated webview) or pure CLI sessions | **Tier 2B: `agent-desktop` + dedicated `--window-id`** | Reuses your daily Chrome login state in background; tab switches in your personal window never break `@snapshot:eN` refs |
 | Electron & native macOS apps (Obsidian, Finder, menu bars) | **Tier 2B: `agent-desktop` (headless)** | Reads Accessibility tree & clicks in background without moving your cursor |
 | Custom-drawn canvases (CapCut/Jianying, AE modals, FocuSee, iPhone Mirroring) | **Tier 3: Computer Use (`LCU` / CUA)** | Screenshot + vision coordinates handle any pixel-rendered surface |
 | Private IMs, password vaults, macOS Notification Center | **Blocked at Layer 0** | Hard-blocked before tool execution across every agent |

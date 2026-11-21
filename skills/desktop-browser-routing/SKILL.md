@@ -10,8 +10,8 @@ description: Three-tier routing runbook for macOS desktop apps and browsers (Nat
 | Target Scenario | Primary Tool | Escalation Signal |
 | :--- | :--- | :--- |
 | App files, drafts, notes, cloud workspaces | **Tier 1: Native CLI / API / File Edit** | Escalate only for UI-only steps (e.g., final export dialog, live plugin UAT) |
-| Public / unauthenticated web pages | **Tier 2A: Built-in Agent Browser** | Escalate if logged-in Chrome session is required |
-| Logged-in Chrome workflows | **Tier 2B: `agent-desktop` (dedicated `--window-id`)** | Single snapshot caps around ~2,500 nodes; no arbitrary JS execution |
+| Web pages in hosts with Chrome cookie sync (**Codex** / **Claude Code**), or public web pages in **Antigravity** | **Tier 2A: Built-in Agent Browser** | Escalate to real Chrome (`agent-desktop`) only if pure CLI mode has no built-in browser or an interactive fallback is needed |
+| Logged-in web workflows where host browser is isolated (**Antigravity**, or pure CLI sessions) | **Tier 2B: `agent-desktop` (dedicated Chrome `--window-id`)** | Single snapshot caps around ~2,500 nodes; no arbitrary JS execution |
 | Accessible native / Electron apps (Obsidian, Finder, menu bars) | **Tier 2B: `agent-desktop` (headless default)** | Escalate if tree is empty or headless click returns success without UI change |
 | Custom-drawn UIs (video editors, AE dialogs, iPhone Mirroring, visual QA) | **Tier 3: Computer Use (`LCU` MCP `js` / native CUA)** | Slower & higher token cost, per-app Touch ID approval |
 | Apps in `~/.config/agent-desktop-router/blocked-apps.json` + Notification Center | **Strictly Blocked** | Enforced by `PreToolUse` hook + CLI wrapper + window/coordinate probe |
