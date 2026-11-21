@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.so
+.DS_Store
+build/
+dist/
+work/
+bin/probe
+src/probe
+*.log
+.env
+*.local.json
